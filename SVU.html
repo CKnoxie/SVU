@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Swinburne's Virtual Universe (SVU)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <style>
+    html, body {
+      scroll-behavior: smooth;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+    .navbar {
+      backdrop-filter: blur(6px);
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    .nav-link {
+      font-weight: 500;
+      color: white !important;
+    }
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    .hero video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      z-index: -1;
+    }
+    .hero .container { z-index: 2; }
+
+    .typing-line span {
+      opacity: 0;
+      display: inline-block;
+      transform: translateY(0.6em);
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    .typing-line.visible span { opacity: 1; transform: translateY(0); }
+
+    .split-section { display: flex; flex-wrap: wrap; min-height: 100vh; }
+    .split-half { flex: 1; background-size: cover; background-position: center; min-height: 300px; }
+    .text-content { background-color: #000; display: flex; align-items: center; justify-content: center; color: white; }
+    .text-content .content { padding: 4rem; max-width: 600px; }
+    @media (max-width: 768px) { .split-section { flex-direction: column; } }
+
+    .parallax { background-repeat: no-repeat; background-size: cover; background-attachment: fixed; }
+
+    .split-section { display: flex; flex-wrap: wrap; min-height: 100vh; margin-bottom: 2rem; }
+    .split-half { flex: 1; background-size: cover; background-position: center; min-height: 400px; }
+    .text-content { display: flex; align-items: center; padding: 6rem 4rem; }
+
+    .glow-text {
+      color: #ffffff;
+      text-shadow: 0 0 5px rgba(122,129,166,.6), 0 0 10px rgba(122,129,166,.6), 0 0 20px rgba(122,129,166,.6);
+    }
+
+    /* Video panel + parallax helper (used for media halves) */
+    .media-half { position: relative; overflow: hidden; background: #000; }
+    .parallax-layer { position: absolute; inset: 0; will-change: transform; transform: translate3d(0,0,0); }
+    .parallax-layer video {
+      position: absolute; top: 50%; left: 50%;
+      min-width: 100%; min-height: 100%;
+      transform: translate(-50%, -50%); object-fit: cover;
+    }
+    @media (prefers-reduced-motion: reduce) { .parallax-layer { transform: none !important; } }
+  </style>
+</head>
+<body style="background-color:#000;">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-white" href="#">SVU</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="#overview">Overview</a></li>
+          <li class="nav-item"><a class="nav-link" href="#technology">Technology</a></li>
+          <li class="nav-item"><a class="nav-link" href="#experiences">Experiences</a></li>
+          <li class="nav-item"><a class="nav-link" href="#collaboration">Collaboration</a></li>
+          <li class="nav-item"><a class="nav-link" href="#future">Future</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <video autoplay muted loop playsinline webkit-playsinline>
+      <source src="https://outreach.ozgrav.org/portal2/wp-content/grand-media/video/SVU.mp4" type="video/mp4">
+      <source src="https://schematichq.com/v2/videos/intro.webm" type="video/webm">
+    </video>
+    <div class="container">
+      <h1 class="typing-line">Swinburne's Virtual Universe</h1>
+    </div>
+  </header>
+
+  <section id="overview" class="py-0">
+<style>#text-overview{background-color:#300b2d; color:#ffffff;} #text-overview h2, #text-overview p { color: #a5bbd1 !important; }
+.split-section { display:flex; flex-wrap:wrap; min-height:100vh; margin-bottom:2rem; }
+.split-half { flex:1; background-size:cover; background-position:center; min-height:400px; }
+.text-content { display:flex; align-items:center; padding:6rem 4rem; }
+.glow-text { color:#ffffff; text-shadow:0 0 5px rgba(122,129,166,.6),0 0 10px rgba(122,129,166,.6),0 0 20px rgba(122,129,166,.6); }
+</style>
+<style>#text-overview{background-color:#0B1830;}
+.split-section { display:flex; flex-wrap:wrap; min-height:100vh; margin-bottom:2rem; }
+.split-half { flex:1; background-size:cover; background-position:center; min-height:400px; }
+.text-content { display:flex; align-items:center; padding:6rem 4rem; }
+.glow-text { color:#ffffff; text-shadow:0 0 5px rgba(122,129,166,.6),0 0 10px rgba(122,129,166,.6),0 0 20px rgba(122,129,166,.6); }
+</style>
+    <div class="split-section">
+      <!-- Overview LEFT: autoplay video + parallax -->
+      <div class="split-half media-half" aria-hidden="true">
+        <div class="parallax-layer" data-speed="0.22">
+          <video id="overviewVideo" autoplay muted playsinline webkit-playsinline loop preload="metadata">
+            <source src="https://outreach.ozgrav.org/portal2/wp-content/grand-media/video/blackholeMB.mp4" type="video/mp4" />
+            <source src="https://schematichq.com/v2/videos/intro.webm" type="video/webm" />
+          </video>
+        </div>
+      </div>
+
+      <div class="split-half text-content text-dark" id="text-overview">
+        <div class="content" data-aos="fade-up">
+          <h2 class="display-5 fw-bold typing-line mb-4">Overview</h2>
+          <p class="lead">The SVU brings the universe closer with immersive storytelling powered by real scientific data and cinematic visuals.</p>
+          <p class="lead">Visitors can witness black holes, gravitational waves, and cosmological simulations in a powerful visual format.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="technology" class="py-0">
+<style>#text-technology{background-color:#3D3A3B;}
+.split-section { display:flex; flex-wrap:wrap; min-height:100vh; margin-bottom:2rem; }
+.split-half { flex:1; background-size:cover; background-position:center; min-height:400px; }
+.text-content { display:flex; align-items:center; padding:6rem 4rem; }
+.glow-text { color:#ffffff; text-shadow:0 0 5px rgba(122,129,166,.6),0 0 10px rgba(122,129,166,.6),0 0 20px rgba(122,129,166,.6); }
+</style>
+    <div class="split-section">
+      <div class="split-half text-content" id="text-technology" style="background-color:#2B4272; color:#ffffff;">
+        <div class="content" data-aos="fade-up">
+          <h2 class="display-5 fw-bold typing-line mb-4">Technology</h2>
+          <p class="lead">At the heart of SVU is a 10-meter-wide LED wall delivering stereoscopic 3D visuals driven by high-performance GPUs and real-time rendering engines.</p>
+          <p class="lead">The system supports scientific data visualization at extreme resolutions, allowing audiences to explore space with unparalleled fidelity.</p>
+        </div>
+      </div>
+      <!-- Technology RIGHT: autoplay video + parallax -->
+      <div class="split-half media-half" aria-hidden="true">
+        <div class="parallax-layer" data-speed="0.28">
+          <video id="technologyVideo" autoplay muted playsinline webkit-playsinline loop preload="metadata">
+            <source src="https://outreach.ozgrav.org/portal2/wp-content/grand-media/video/Sun.mp4" type="video/mp4" />
+            <source src="https://schematichq.com/v2/videos/intro.webm" type="video/webm" />
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experiences" class="py-0">
+<style>#text-experiences{background-color:#333F4F;}
+.split-section { display:flex; flex-wrap:wrap; min-height:100vh; margin-bottom:2rem; }
+.split-half { flex:1; background-size:cover; background-position:center; min-height:400px; }
+.text-content { display:flex; align-items:center; padding:6rem 4rem; }
+.glow-text { color:#ffffff; text-shadow:0 0 5px rgba(122,129,166,.6),0 0 10px rgba(122,129,166,.6),0 0 20px rgba(122,129,166,.6); }
+</style>
+    <div class="split-section">
+      <!-- Experiences LEFT: autoplay video + parallax -->
+      <div class="split-half media-half" aria-hidden="true">
+        <div class="parallax-layer" data-speed="0.24">
+          <video id="experiencesVideo" autoplay muted playsinline webkit-playsinline loop preload="metadata">
+            <source src="https://outreach.ozgrav.org/portal2/wp-content/grand-media/video/Pulsar.mp4" type="video/mp4" />
+            <source src="https://schematichq.com/v2/videos/intro.webm" type="video/webm" />
+          </video>
+        </div>
+      </div>
+
+      <div class="split-half text-content" id="text-experiences" style="background-color:#333F4F; color:#ffffff;">
+        <div class="content" data-aos="fade-up">
+          <h2 class="display-5 fw-bold typing-line mb-4">Experiences</h2>
+          <p class="lead">SVU showcases interactive stories of cosmic events – from the birth of stars to the collision of black holes.</p>
+          <p class="lead">Each experience is designed to evoke awe and curiosity, making advanced astrophysics accessible to everyone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="collaboration" class="py-0">
+<style>#text-collaboration{background-color:#ED1C2E;}
+.split-section { display:flex; flex-wrap:wrap; min-height:100vh; margin-bottom:2rem; }
+.split-half { flex:1; background-size:cover; background-position:center; min-height:400px; }
+.text-content { display:flex; align-items:center; padding:6rem 4rem; }
+.glow-text { color:#ffffff; text-shadow:0 0 5px rgba(122,129,166,.6),0 0 10px rgba(122,129,166,.6),0 0 20px rgba(122,129,166,.6); }
+</style>
+    <div class="split-section">
+      <div class="split-half text-content" id="text-collaboration" style="background-color:#7A81A6; color:#ffffff;">
+        <div class="content" data-aos="fade-up">
+          <h2 class="display-5 fw-bold typing-line mb-4">Collaboration</h2>
+          <p class="lead">The SVU is a hub for scientists, artists, educators, and technologists to co-create unique, meaningful experiences.</p>
+          <p class="lead">Through partnerships with institutions and industry, we’re redefining how science is communicated.</p>
+        </div>
+      </div>
+      <!-- Collaboration RIGHT: autoplay video + parallax -->
+      <div class="split-half media-half" aria-hidden="true">
+        <div class="parallax-layer" data-speed="0.30">
+          <video id="collaborationVideo" autoplay muted playsinline webkit-playsinline loop preload="metadata">
+            <source src="https://outreach.ozgrav.org/portal2/wp-content/grand-media/video/Collab2.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="future" class="py-0">
+<style>#text-future{background-color:#000000;}
+.split-section { display:flex; flex-wrap:wrap; min-height:100vh; margin-bottom:2rem; }
+.split-half { flex:1; background-size:cover; background-position:center; min-height:400px; }
+.text-content { display:flex; align-items:center; padding:6rem 4rem; }
+.glow-text { color:#ffffff; text-shadow:0 0 5px rgba(122,129,166,.6),0 0 10px rgba(122,129,166,.6),0 0 20px rgba(122,129,166,.6); }
+</style>
+    <div class="split-section">
+      <!-- Future LEFT: replaced image with autoplay video + parallax -->
+      <div class="split-half media-half" aria-hidden="true">
+        <div class="parallax-layer" data-speed="0.26">
+          <video id="futureVideo" autoplay muted playsinline webkit-playsinline loop preload="metadata">
+            <source src="https://outreach.ozgrav.org/portal2/wp-content/grand-media/video/Earth.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div class="split-half text-content" id="text-future" style="background-color:#B5B3C8; color:#ffffff;">
+        <div class="content" data-aos="fade-up">
+          <h2 class="display-5 fw-bold typing-line mb-4">Future</h2>
+          <p class="lead">SVU is a constantly evolving platform. We’re expanding into generative storytelling, immersive gaming, and AI-driven science communication.</p>
+          <p class="lead">The future is bright, and the universe is just getting started.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+    document.addEventListener("DOMContentLoaded", function () {
+      const speed = 35;
+      const lines = document.querySelectorAll(".typing-line:not(p)");
+      lines.forEach((el) => {
+        const text = el.textContent;
+        el.setAttribute("aria-label", text);
+        el.textContent = "";
+        [...text].forEach((char, i) => {
+          const span = document.createElement("span");
+          span.innerHTML = char === " " ? "&nbsp;" : char;
+          span.style.transitionDelay = `${i * speed}ms`;
+          el.appendChild(span);
+        });
+        const trigger = () => el.classList.add("visible");
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) { trigger(); obs.unobserve(entry.target); }
+          });
+        }, { threshold: 0.5 });
+        observer.observe(el);
+      });
+    });
+
+    /* Parallax engine for .parallax-layer elements (videos) */
+    (function () {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce) return;
+
+      const layers = Array.from(document.querySelectorAll(".parallax-layer"));
+      if (!layers.length) return;
+
+      let ticking = false, vh = window.innerHeight;
+
+      function update() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const mid = scrollY + vh * 0.5;
+
+        for (const el of layers) {
+          const speed = parseFloat(el.dataset.speed) || 0.22;
+          const r = el.getBoundingClientRect();
+          const center = scrollY + r.top + r.height * 0.5;
+          const dist = mid - center;
+          const offset = Math.max(-200, Math.min(200, dist * speed));
+          el.style.transform = `translate3d(0, ${offset}px, 0)`;
+        }
+        ticking = false;
+      }
+      function tick() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+
+      window.addEventListener("scroll", tick, { passive: true });
+      window.addEventListener("resize", () => { vh = window.innerHeight; tick(); });
+      update();
+    })();
+  </script>
+</body>
+</html>
