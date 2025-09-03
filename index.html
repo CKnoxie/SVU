@@ -153,18 +153,24 @@
 
   <!-- OVERVIEW -->
   <section id="overview" class="py-0">
-    <style>
-      #text-overview{background-color:#0B1830;}
-      .split-section { display:flex; flex-wrap:wrap; min-height:100vh; margin-bottom:2rem; }
-      .split-half { flex:1; background-size:cover; background-position:center; min-height:400px; }
-      .text-content { display:flex; align-items:center; padding:6rem 4rem; }
-      .glow-text { color:#ffffff; text-shadow:0 0 5px rgba(122,129,166,.6),0 0 10px rgba(122,129,166,.6),0 0 20px rgba(122,129,166,.6); }
-      @media (max-width: 576px) {
-        .split-section { min-height:auto; }
-        .split-half { min-height:300px; }
-        #text-overview .content { max-width:44ch; }
-      }
-    </style>
+<style>
+  #text-overview{background-color:#0B1830;}
+  .split-section { display:flex; flex-wrap:wrap; min-height:100vh; margin-bottom:2rem; }
+  .split-half { flex:1; background-size:cover; background-position:center; min-height:400px; }
+  .text-content { display:flex; align-items:center; padding:6rem 4rem; }
+  .glow-text { color:#ffffff; text-shadow:0 0 5px rgba(122,129,166,.6),0 0 10px rgba(122,129,166,.6),0 0 20px rgba(122,129,166,.6); }
+  @media (max-width: 576px) {
+    .split-section { min-height:auto; }
+    .split-half { min-height:300px; }
+    #text-overview .content { max-width:44ch; }
+  }
+
+  /* Add this block ↓ */
+  #text-overview h2,
+  #text-overview p {
+    color: #ffffff; /* or #e6e8f0 if you want softer */
+  }
+</style>
     <div class="split-section">
       <!-- Overview LEFT: autoplay video + parallax -->
       <div class="split-half media-half" aria-hidden="true">
