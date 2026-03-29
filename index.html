@@ -133,7 +133,6 @@
       .text-content .content { max-width: 44ch; padding: 0; }
       .split-section { min-height: auto; }
       .split-half { min-height: 300px; }
-      .typing-line span { display: inline; transform: none; opacity: 1; transition: none; }
       .parallax-layer { inset: 0 !important; }
       #saturn-rings { height: 180vh !important; }
       .hero { margin-top: -30vh !important; }
@@ -306,12 +305,10 @@
 
     // ── Typing animation ──────────────────────────────────────────
     document.addEventListener("DOMContentLoaded", function () {
-      const isSmall = window.matchMedia("(max-width: 576px)").matches;
       const speed = 35;
       const lines = document.querySelectorAll(".typing-line:not(p)");
       lines.forEach((el) => {
         const text = el.getAttribute("data-typing") || el.textContent;
-        if (isSmall) { el.textContent = text; return; }
         el.setAttribute("aria-label", text);
         el.textContent = "";
         let charIndex = 0;
