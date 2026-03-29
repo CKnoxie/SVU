@@ -412,8 +412,12 @@
         frames.push(img);
       }
 
+      let resizeTimer;
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', () => { resize(); onScroll(); });
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { resize(); onScroll(); }, 250);
+      });
       resize();
     })();
 
