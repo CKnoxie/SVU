@@ -136,6 +136,8 @@
       .typing-line span { display: inline; transform: none; opacity: 1; transition: none; }
       .parallax-layer { inset: 0 !important; }
       #saturn-rings { height: 180vh !important; }
+      #saturn-title { display: none !important; }
+      #hero-mobile-title { display: flex !important; }
     }
   </style>
 </head>
@@ -174,8 +176,8 @@
       <canvas id="saturn-canvas"
               style="position:absolute; inset:0; width:100%; height:100%;"
               aria-hidden="true"></canvas>
-      <!-- Title overlay -->
-      <div style="position:absolute; inset:0; display:flex; align-items:flex-end;
+      <!-- Title overlay (hidden on mobile) -->
+      <div id="saturn-title" style="position:absolute; inset:0; display:flex; align-items:flex-end;
                   justify-content:center; text-align:center; padding-bottom:18vh;
                   z-index:2; pointer-events:none;">
         <h1 class="typing-line"
@@ -200,7 +202,16 @@
          data-speed="0.45"
          style="background-image: url('https://outreach.ozgrav.org/portal2/wp-content/grand-media/image/SVU19BC.jpg'); background-position: center top; top: -55%;"
          aria-hidden="true"></div>
-    <div class="parallax-overlay" style="background: rgba(0,0,0,0.45);"></div>
+    <!-- Mobile-only title: centred over the hero image, scrolls away naturally -->
+    <div id="hero-mobile-title"
+         style="display:none; position:absolute; inset:0; align-items:center;
+                justify-content:center; text-align:center; z-index:2; pointer-events:none;
+                padding: 1rem;">
+      <h2 style="color:#fff; font-size:clamp(1.5rem,7vw,2rem);
+                 text-shadow:0 2px 24px rgba(0,0,0,0.8); margin:0;">
+        Swinburne's Virtual Universe
+      </h2>
+    </div>
   </header>
 
   <!-- OVERVIEW
