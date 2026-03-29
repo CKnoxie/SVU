@@ -136,8 +136,9 @@
       .typing-line span { display: inline; transform: none; opacity: 1; transition: none; }
       .parallax-layer { inset: 0 !important; }
       #saturn-rings { height: 180vh !important; }
-      #saturn-title { display: none !important; }
+      #page-title { display: none !important; }
       #hero-mobile-title { display: flex !important; }
+      .hero { margin-top: -30vh !important; }
     }
   </style>
 </head>
@@ -169,23 +170,24 @@
     </div>
   </nav>
 
+  <!-- Fixed title — visible over Saturn animation AND hero, fades when hero scrolls away -->
+  <div id="page-title"
+       style="position:fixed; bottom:18vh; left:0; right:0; text-align:center;
+              z-index:10; pointer-events:none;">
+    <h1 class="typing-line"
+        style="color:#fff; font-size:clamp(1.6rem,4.8vw,4rem);
+               text-shadow:0 2px 24px rgba(0,0,0,0.8); margin:0;">
+      Swinburne's Virtual Universe
+    </h1>
+  </div>
+
   <!-- SATURN RINGS FLY-THROUGH -->
   <section id="saturn-rings" style="position:relative; height:350vh; background:#000;">
-    <!-- Sticky viewport: canvas + title live together -->
+    <!-- Sticky viewport: canvas only -->
     <div style="position:sticky; top:0; height:100vh; overflow:hidden;">
       <canvas id="saturn-canvas"
               style="position:absolute; inset:0; width:100%; height:100%;"
               aria-hidden="true"></canvas>
-      <!-- Title overlay (hidden on mobile) -->
-      <div id="saturn-title" style="position:absolute; inset:0; display:flex; align-items:flex-end;
-                  justify-content:center; text-align:center; padding-bottom:18vh;
-                  z-index:2; pointer-events:none;">
-        <h1 class="typing-line"
-            style="color:#fff; font-size:clamp(1.6rem,4.8vw,4rem);
-                   text-shadow:0 2px 24px rgba(0,0,0,0.8);">
-          Swinburne's Virtual Universe
-        </h1>
-      </div>
     </div>
     <div id="saturn-hint"
          style="position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
@@ -197,7 +199,7 @@
 
   <!-- HERO
        Image: Hubble — Legion of Galaxies (NASA, public domain) -->
-  <header class="hero">
+  <header class="hero" style="margin-top:-80vh; position:relative; z-index:2;">
     <div class="parallax-layer"
          data-speed="0.45"
          style="background-image: url('https://outreach.ozgrav.org/portal2/wp-content/grand-media/image/SVU19BC.jpg'); background-position: center top; top: -55%;"
@@ -362,16 +364,10 @@
       if (!canvas || !section) return;
 
       const ctx        = canvas.getContext('2d');
-      const title      = section.querySelector('h1');
       const FRAME_COUNT = 24;
       const BASE_URL    = 'https://outreach.ozgrav.org/portal2/wp-content/grand-media/image/Sat';
       const frames      = [];
       let   currentFrame = 0;
-
-      if (title) {
-        title.style.transformOrigin = 'center center';
-        title.style.willChange      = 'transform, opacity';
-      }
 
       function pad(n) { return n.toString().padStart(4, '0'); }
 
@@ -399,15 +395,6 @@
         const progress     = Math.max(0, Math.min(1, (scrollY - sectionTop) / scrollable));
         const frame        = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
         if (hint) hint.style.opacity = progress > 0.04 ? '0' : '1';
-
-        if (title) {
-          const scale    = 1 + progress * 3;
-          const opacity  = Math.max(0, 1 - progress * 1.2);
-          const moveDown = progress * window.innerHeight * 0.3;
-          title.style.transform = `translateY(${moveDown}px) scale(${scale})`;
-          title.style.opacity   = opacity;
-        }
-
         if (frame !== currentFrame) { currentFrame = frame; paint(currentFrame); }
       }
 
@@ -422,6 +409,22 @@
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', () => { resize(); onScroll(); });
       resize();
+    })();
+
+    // ── Page title: fade out as hero scrolls away ────────────────
+    (function () {
+      const titleEl = document.getElementById('page-title');
+      const hero    = document.querySelector('.hero');
+      if (!titleEl || !hero) return;
+
+      function update() {
+        const rect = hero.getBoundingClientRect();
+        // opacity 1→0 as hero top travels from viewport bottom to viewport top
+        titleEl.style.opacity = Math.max(0, Math.min(1, rect.top / window.innerHeight));
+      }
+
+      window.addEventListener('scroll', update, { passive: true });
+      update();
     })();
 
     // ── Parallax scroll ───────────────────────────────────────────
