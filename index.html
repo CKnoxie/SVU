@@ -375,9 +375,12 @@
       function resize() {
         const w = window.innerWidth;
         const h = window.innerHeight;
-        if (canvas.width === w && canvas.height === h) return;
+        // Only grow height — never shrink it in response to address-bar appearing.
+        // This prevents the canvas resolution from changing during scroll on mobile.
+        const newH = Math.max(h, canvas.height || 0);
+        if (canvas.width === w && canvas.height === newH) return;
         canvas.width  = w;
-        canvas.height = h;
+        canvas.height = newH;
         paint(currentFrame);
       }
 
@@ -386,13 +389,13 @@
         while (i >= 0 && (!frames[i] || !frames[i].complete || !frames[i].naturalWidth)) i--;
         if (i < 0) return;
         const img = frames[i];
-        // Lock frame dimensions to the first loaded frame so scale never jumps
         if (!frameW) { frameW = img.naturalWidth; frameH = img.naturalHeight; }
         const cw = canvas.width, ch = canvas.height;
         const scale = Math.max(cw / frameW, ch / frameH);
         const w = frameW * scale;
         const h = frameH * scale;
-        ctx.clearRect(0, 0, cw, ch);
+        // No clearRect — each frame fully covers the canvas, and skipping the clear
+        // eliminates the transparent flash that causes pops on mobile.
         ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
       }
 
