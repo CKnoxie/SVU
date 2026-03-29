@@ -41,11 +41,12 @@
       height: 100vh;
       overflow: hidden;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
       text-align: center;
       color: white;
       background: #000;
+      padding-bottom: 18vh;
     }
 
     .hero .container {
@@ -117,6 +118,10 @@
 
     @media (prefers-reduced-motion: reduce) {
       .parallax-layer { transform: none !important; }
+    }
+
+    .hero h1 {
+      font-size: clamp(1.6rem, 4.8vw, 4rem);
     }
 
     @media (max-width: 576px) {
@@ -212,9 +217,8 @@
   <section id="experiences" class="py-0" style="position: relative; overflow: hidden;">
     <div class="parallax-layer"
          data-speed="0.4"
-         style="background-image: url('https://outreach.ozgrav.org/portal2/wp-content/grand-media/image/SVU01C.jpg');"
+         style="background-image: url('https://outreach.ozgrav.org/portal2/wp-content/grand-media/image/SVU01C.jpg'); background-position: 30% center;"
          aria-hidden="true"></div>
-    <div class="parallax-overlay" style="background: rgba(0,0,0,0.6);"></div>
     <div class="split-section" style="position: relative; z-index: 1;">
       <div class="split-half text-content" style="background-color: rgba(0, 0, 0, 0.8); color:#fff; flex: 0 0 60%; margin-left: auto;">
         <div class="content" data-aos="fade-up">
@@ -284,11 +288,26 @@
         if (isSmall) { el.textContent = text; return; }
         el.setAttribute("aria-label", text);
         el.textContent = "";
-        [...text].forEach((char, i) => {
-          const span = document.createElement("span");
-          span.innerHTML = char === " " ? "&nbsp;" : char;
-          span.style.transitionDelay = `${i * speed}ms`;
-          el.appendChild(span);
+        let charIndex = 0;
+        text.split(" ").forEach((word, wi, arr) => {
+          const wordWrap = document.createElement("span");
+          wordWrap.style.display = "inline-block";
+          wordWrap.style.whiteSpace = "nowrap";
+          [...word].forEach((char) => {
+            const span = document.createElement("span");
+            span.textContent = char;
+            span.style.transitionDelay = `${charIndex * speed}ms`;
+            charIndex++;
+            wordWrap.appendChild(span);
+          });
+          el.appendChild(wordWrap);
+          if (wi < arr.length - 1) {
+            const space = document.createElement("span");
+            space.innerHTML = "&nbsp;";
+            space.style.transitionDelay = `${charIndex * speed}ms`;
+            charIndex++;
+            el.appendChild(space);
+          }
         });
         const observer = new IntersectionObserver((entries, obs) => {
           entries.forEach((entry) => {
@@ -298,6 +317,37 @@
         observer.observe(el);
       });
     });
+
+    // ── Hero title zoom on scroll ─────────────────────────────────
+    (function () {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce) return;
+
+      const heroTitle = document.querySelector(".hero h1");
+      const hero = document.querySelector(".hero");
+      if (!heroTitle || !hero) return;
+
+      heroTitle.style.transformOrigin = "center center";
+      heroTitle.style.willChange = "transform, opacity";
+
+      function updateZoom() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const heroHeight = hero.offsetHeight;
+        const progress = Math.min(scrollY / heroHeight, 1);
+        const scale = 1 + progress * 3;
+        const opacity = Math.max(0, 1 - progress * 1.2);
+        const moveDown = progress * window.innerHeight * 0.3;
+        heroTitle.style.transform = `translateY(${moveDown}px) scale(${scale})`;
+        heroTitle.style.opacity = opacity;
+      }
+
+      let ticking = false;
+      window.addEventListener("scroll", function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(function () { updateZoom(); ticking = false; }); }
+      }, { passive: true });
+
+      updateZoom();
+    })();
 
     // ── Parallax scroll ───────────────────────────────────────────
     (function () {
@@ -320,7 +370,9 @@
           const center = scrollY + rect.top + rect.height * 0.5;
           const dist = mid - center;
           const offset = Math.max(-180, Math.min(180, dist * speed));
-          el.style.transform = `translate3d(0, ${offset}px, 0)`;
+          const zoomProgress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
+          const scale = 1 + zoomProgress * 0.15;
+          el.style.transform = `translate3d(0, ${offset}px, 0) scale(${scale})`;
         }
         ticking = false;
       }
