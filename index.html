@@ -364,6 +364,7 @@
       const BASE_URL    = 'https://outreach.ozgrav.org/portal2/wp-content/grand-media/image/SaturnAnim';
       const frames      = [];
       let   currentFrame = 0;
+      let   frameW = 0, frameH = 0;  // locked to first frame's dimensions
 
       function pad(n) { return n.toString().padStart(4, '0'); }
 
@@ -381,10 +382,12 @@
         while (i >= 0 && (!frames[i] || !frames[i].complete || !frames[i].naturalWidth)) i--;
         if (i < 0) return;
         const img = frames[i];
+        // Lock frame dimensions to the first loaded frame so scale never jumps
+        if (!frameW) { frameW = img.naturalWidth; frameH = img.naturalHeight; }
         const cw = canvas.width, ch = canvas.height;
-        const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
-        const w = img.naturalWidth  * scale;
-        const h = img.naturalHeight * scale;
+        const scale = Math.max(cw / frameW, ch / frameH);
+        const w = frameW * scale;
+        const h = frameH * scale;
         ctx.clearRect(0, 0, cw, ch);
         ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
       }
