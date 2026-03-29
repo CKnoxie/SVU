@@ -359,9 +359,9 @@
       const hint    = document.getElementById('saturn-hint');
       if (!canvas || !section) return;
 
-      const ctx        = canvas.getContext('2d');
-      const FRAME_COUNT = 24;
-      const BASE_URL    = 'https://outreach.ozgrav.org/portal2/wp-content/grand-media/image/Sat';
+      const ctx         = canvas.getContext('2d');
+      const FRAME_COUNT = 44;
+      const BASE_URL    = 'https://outreach.ozgrav.org/portal2/wp-content/grand-media/image/SaturnAnim';
       const frames      = [];
       let   currentFrame = 0;
 
@@ -374,8 +374,10 @@
       }
 
       function paint(index) {
-        const img = frames[index];
-        if (!img || !img.complete || !img.naturalWidth) return;
+        let i = index;
+        while (i >= 0 && (!frames[i] || !frames[i].complete || !frames[i].naturalWidth)) i--;
+        if (i < 0) return;
+        const img = frames[i];
         const cw = canvas.width, ch = canvas.height;
         const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
         const w = img.naturalWidth  * scale;
@@ -385,20 +387,25 @@
       }
 
       function onScroll() {
-        const scrollY      = window.scrollY || window.pageYOffset;
-        const sectionTop   = section.getBoundingClientRect().top + scrollY;
-        const scrollable   = section.offsetHeight - window.innerHeight;
-        const progress     = Math.max(0, Math.min(1, (scrollY - sectionTop) / scrollable));
-        const frame        = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
+        // -rect.top = how far the section has scrolled past the top of the viewport.
+        // Dividing by scrollable gives a clean 0→1 progress with no cached state to drift.
+        const scrolled   = -section.getBoundingClientRect().top;
+        const scrollable = section.offsetHeight - window.innerHeight;
+        const progress   = Math.max(0, Math.min(1, scrolled / scrollable));
+        const frame      = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
         if (hint) hint.style.opacity = progress > 0.04 ? '0' : '1';
         if (frame !== currentFrame) { currentFrame = frame; paint(currentFrame); }
       }
 
-      // Preload — draw first frame as soon as it arrives
+      // Preload — on load just repaint the current frame (never recalculate from scroll)
+      // so a late-arriving onload can't corrupt currentFrame during momentum scrolling
       for (let i = 0; i < FRAME_COUNT; i++) {
         const img = new Image();
         img.src = BASE_URL + pad(i) + '.jpg';
-        if (i === 0) img.onload = () => { resize(); onScroll(); };
+        img.onload = () => {
+          if (i === 0) { resize(); onScroll(); }
+          else { paint(currentFrame); }
+        };
         frames.push(img);
       }
 
