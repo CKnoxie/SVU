@@ -189,21 +189,25 @@
     </h1>
   </div>
 
-  <!-- SATURN RINGS FLY-THROUGH -->
-  <section id="saturn-rings" style="position:relative; height:350vh; background:#000;">
-    <!-- Sticky viewport: canvas only -->
-    <div style="position:sticky; top:0; height:100vh; height:100dvh; overflow:hidden;">
-      <canvas id="saturn-canvas"
-              style="position:absolute; inset:0; width:100%; height:100%;"
-              aria-hidden="true"></canvas>
-    </div>
-    <div id="saturn-hint"
-         style="position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
-                color:rgba(255,255,255,0.55); font-size:0.85rem; letter-spacing:0.12em;
-                text-transform:uppercase; pointer-events:none; transition:opacity 0.4s;">
-      scroll
-    </div>
-  </section>
+  <!-- Fixed canvas — always exactly viewport-sized, no container to cause scale pops -->
+  <canvas id="saturn-canvas"
+          style="position:fixed; inset:0; z-index:0; display:none;"
+          aria-hidden="true"></canvas>
+  <div id="saturn-hint"
+       style="position:fixed; bottom:2rem; left:50%; transform:translateX(-50%);
+              color:rgba(255,255,255,0.55); font-size:0.85rem; letter-spacing:0.12em;
+              text-transform:uppercase; pointer-events:none; transition:opacity 0.4s;
+              z-index:2; display:none;">
+    scroll
+    <span style="display:block; margin:6px auto 0;
+                 width:8px; height:8px;
+                 border-right:2px solid rgba(255,255,255,0.55);
+                 border-bottom:2px solid rgba(255,255,255,0.55);
+                 transform:rotate(45deg);"></span>
+  </div>
+
+  <!-- SATURN RINGS FLY-THROUGH — section is purely a scroll-distance spacer -->
+  <section id="saturn-rings" style="height:350vh; background:#000;"></section>
 
   <!-- HERO
        Image: Hubble — Legion of Galaxies (NASA, public domain) -->
@@ -393,13 +397,20 @@
       }
 
       function onScroll() {
-        // -rect.top = how far the section has scrolled past the top of the viewport.
-        // Dividing by scrollable gives a clean 0→1 progress with no cached state to drift.
         const scrolled   = -section.getBoundingClientRect().top;
         const scrollable = section.offsetHeight - window.innerHeight;
         const progress   = Math.max(0, Math.min(1, scrolled / scrollable));
-        const frame      = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
-        if (hint) hint.style.opacity = progress > 0.04 ? '0' : '1';
+
+        // Show canvas from when Saturn enters view until well past the section.
+        // Sections later in the DOM (overview etc.) naturally render above z-index:0.
+        const active = scrolled >= 0 && scrolled < scrollable + window.innerHeight;
+        canvas.style.display = active ? 'block' : 'none';
+        if (hint) {
+          hint.style.display  = active ? 'block' : 'none';
+          hint.style.opacity  = progress > 0.04 ? '0' : '1';
+        }
+
+        const frame = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
         if (frame !== currentFrame) { currentFrame = frame; paint(currentFrame); }
       }
 
@@ -415,13 +426,8 @@
         frames.push(img);
       }
 
-      let resizeTimer;
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', () => {
-        // Debounce — fires once the browser has fully settled (address bar done animating)
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => { resize(); onScroll(); }, 300);
-      });
+      window.addEventListener('resize', () => { resize(); onScroll(); });
       resize();
     })();
 
