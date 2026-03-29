@@ -136,6 +136,17 @@
       .parallax-layer { inset: 0 !important; }
       #saturn-rings { height: 180vh !important; }
       .hero { margin-top: -30vh !important; }
+      .parallax-layer {
+        will-change: auto !important;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+      }
+      .parallax-overlay {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
     }
   </style>
 </head>
