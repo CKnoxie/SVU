@@ -217,7 +217,7 @@
   <section id="experiences" class="py-0" style="position: relative; overflow: hidden;">
     <div class="parallax-layer"
          data-speed="0.4"
-         style="background-image: url('https://outreach.ozgrav.org/portal2/wp-content/grand-media/image/SVU01C.jpg'); background-position: 30% center;"
+         style="background-image: url('https://outreach.ozgrav.org/portal2/wp-content/grand-media/image/SVU01D.jpg'); background-position: 30% center;"
          aria-hidden="true"></div>
     <div class="split-section" style="position: relative; z-index: 1;">
       <div class="split-half text-content" style="background-color: rgba(0, 0, 0, 0.8); color:#fff; flex: 0 0 60%; margin-left: auto;">
@@ -331,7 +331,10 @@
       heroTitle.style.willChange = "transform, opacity";
 
       function updateZoom() {
-        const scrollY = window.scrollY || window.pageYOffset;
+        // Include visualViewport.offsetTop so the effect fires immediately when
+        // iOS Safari collapses its address bar (scrollY stays 0 during that phase).
+        const scrollY = (window.scrollY || window.pageYOffset) +
+                        (window.visualViewport ? window.visualViewport.offsetTop : 0);
         const heroHeight = hero.offsetHeight;
         const progress = Math.min(scrollY / heroHeight, 1);
         const scale = 1 + progress * 3;
@@ -342,9 +345,15 @@
       }
 
       let ticking = false;
-      window.addEventListener("scroll", function () {
+      function tick() {
         if (!ticking) { ticking = true; requestAnimationFrame(function () { updateZoom(); ticking = false; }); }
-      }, { passive: true });
+      }
+
+      window.addEventListener("scroll", tick, { passive: true });
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", tick);
+        window.visualViewport.addEventListener("scroll", tick);
+      }
 
       updateZoom();
     })();
