@@ -368,8 +368,11 @@
       function pad(n) { return n.toString().padStart(4, '0'); }
 
       function resize() {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        if (canvas.width === w && canvas.height === h) return;
+        canvas.width  = w;
+        canvas.height = h;
         paint(currentFrame);
       }
 
